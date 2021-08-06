@@ -31,4 +31,4 @@ def bobcoin(ERC20Token, owner):
 
 @pytest.fixture(scope="module")
 def token_swap(TokenSwap, alicecoin, bobcoin, owner):
-    return TokenSwap.deploy(alicecoin, bobcoin, 1, {'from': owner})
+    return TokenSwap.deploy(alicecoin, bobcoin, 2, {'from': owner})

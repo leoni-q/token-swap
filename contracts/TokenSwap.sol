@@ -19,9 +19,20 @@ contract TokenSwap is Ownable {
         price = _price;
     }
 
-    function deposit(address _address, uint256 _amount) external onlyOwner validateAddress(_address) {
-        require(IERC20(_address).allowance(owner(), address(this)) >= _amount, "sender allowance for the contract is too low");
-        require(IERC20(_address).transferFrom(owner(), address(this), _amount), "deposit failed");
+    function deposit(address _address, uint256 _amount) external onlyOwner validateAddress(_address) validateAllowance(_address, _amount) {
+        require(IERC20(_address).transferFrom(msg.sender, address(this), _amount), "deposit failed");
+    }
+
+    function exchange(address _address, uint256 _amount) external validateAddress(_address) validateAllowance(_address, _amount) {
+        if (_address == tokenA) {
+            uint256 tokenB_amount_to_exchange = _amount * price;
+            require(IERC20(tokenA).transferFrom(msg.sender, owner(), _amount), "exchange failed");
+            require(IERC20(tokenB).transfer(msg.sender, tokenB_amount_to_exchange), "exchange failed");
+        } else {
+            uint256 tokenA_amount_to_exchange = _amount / price;
+            require(IERC20(tokenB).transferFrom(msg.sender, owner(), _amount), "exchange failed");
+            require(IERC20(tokenA).transfer(msg.sender, tokenA_amount_to_exchange), "exchange failed");
+        }
     }
 
     function updatePrice(uint256 _price) external onlyOwner {
@@ -30,6 +41,11 @@ contract TokenSwap is Ownable {
 
     modifier validateAddress(address _address) {
         require(_address == tokenA || _address == tokenB, "_address param must represent either tokenA or tokenB address from TokenSwap contract");
+        _;
+    }
+
+    modifier validateAllowance(address _address, uint256 _amount) {
+        require(IERC20(_address).allowance(msg.sender, address(this)) >= _amount, "sender allowance for the contract is too low");
         _;
     }
 }
