@@ -27,3 +27,8 @@ def alicecoin(ERC20Token, owner):
 @pytest.fixture(scope="module")
 def bobcoin(ERC20Token, owner):
     return ERC20Token.deploy("TokenB", 1000 * 10 ** DECIMALS, {'from': owner})
+
+
+@pytest.fixture(scope="module")
+def token_swap(TokenSwap, alicecoin, bobcoin, owner):
+    return TokenSwap.deploy(alicecoin, bobcoin, 1, {'from': owner})

@@ -11,5 +11,5 @@ def test_initialize_contract_with_proper_values(alicecoin, bobcoin, owner):
     # then
     assert token_swap.tokenA() == alicecoin.address
     assert token_swap.tokenB() == bobcoin.address
-    assert token_swap.price() == 1
+    assert token_swap.price() == initial_price
     assert token_swap.owner() == owner
