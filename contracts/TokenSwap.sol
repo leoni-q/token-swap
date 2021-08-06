@@ -1,6 +1,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
 contract TokenSwap is Ownable {
@@ -18,7 +19,17 @@ contract TokenSwap is Ownable {
         price = _price;
     }
 
+    function deposit(address _address, uint256 _amount) external onlyOwner validateAddress(_address) {
+        require(IERC20(_address).allowance(owner(), address(this)) >= _amount, "sender allowance for the contract is too low");
+        require(IERC20(_address).transferFrom(owner(), address(this), _amount), "deposit failed");
+    }
+
     function updatePrice(uint256 _price) external onlyOwner {
         price = _price;
+    }
+
+    modifier validateAddress(address _address) {
+        require(_address == tokenA || _address == tokenB, "_address param must represent either tokenA or tokenB address from TokenSwap contract");
+        _;
     }
 }
