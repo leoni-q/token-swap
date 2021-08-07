@@ -27,6 +27,18 @@ def test_deposit_tokens_when_allowance_is_higher_then_amount_to_deposit(token_sw
     assert alicecoin.balanceOf(token_swap.address) == amount_to_deposit
 
 
+def test_deposit_bobcoin_tokens(token_swap, bobcoin, owner):
+    # given
+    amount_to_deposit = 500 * 10 ** DECIMALS
+    bobcoin.approve(token_swap.address, amount_to_deposit + 1000, {'from': owner})
+
+    # when
+    token_swap.deposit(bobcoin.address, amount_to_deposit, {'from': owner})
+
+    # then
+    assert bobcoin.balanceOf(token_swap.address) == amount_to_deposit
+
+
 def test_do_not_deposit_tokens_when_call_function_as_not_owner(token_swap, alicecoin, user):
     with brownie.reverts("Ownable: caller is not the owner"):
         token_swap.deposit(alicecoin.address, 1, {'from': user})
