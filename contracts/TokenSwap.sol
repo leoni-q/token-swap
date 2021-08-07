@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
  * @title
  *  TokenSwap
  * @notice
- *  TokenSwap is a contract that can be used to exchange two ERC20 tokens for a price hardcoded on the contract.
+ *  TokenSwap is a contract that can be used to exchange two ERC20 tokens for a price set on the contract.
  *  Price can be updated only by the owner of the contract.
  *  Tokens to exchange can be deposited only by the owner of the contract.
  *  Anyone can invoke the exchange method to swap one token for another.
