@@ -1,6 +1,6 @@
 ## About
 
-This repository contains TokenSwap contract which can be used to exchange two ERC20 tokens 
+This repository contains TokenSwap contract which can be used to exchange two ERC20 tokens (18-decimals)
 for given price.
 
 ## Prerequisites
